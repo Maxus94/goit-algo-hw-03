@@ -12,16 +12,27 @@ def search_tree(path: Path) -> None:
 def copy_file(path: Path, file_name: Path):
     
     if not path.exists():
-        path.mkdir(parents=False, exist_ok=True)
-    
-    [_, ext]= str(file_name.name).split('.')
+        try:
+            path.mkdir(parents=False, exist_ok=True)
+        except:
+            return "It is impossible to create this directory"    
+    try:
+        [_, ext]= str(file_name.name).split('.')
+    except:
+        return f"Wrong file name {file_name.name}, without extension"
     dir_to_copy = Path(ext)
     directory = Path(str(path.name) + '/' + ext)    
     
     if dir_to_copy not in path.iterdir():    
-        directory.mkdir(parents=False, exist_ok=True)   
+        try:
+            directory.mkdir(parents=False, exist_ok=True)   
+        except:
+            return "It is impossible to create this directory"
     
-    shutil.copy(file_name, directory)
+    try:
+        shutil.copy(file_name, directory)
+    except:
+        return f"It is not possible to copy {file_name} into {directory}"
 
 dir_source = Path(sys.argv[1])
 dir_target = Path(sys.argv[2]) if len(sys.argv) > 2  else Path("dist")
